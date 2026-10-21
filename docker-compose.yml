@@ -1,0 +1,20 @@
+name: roomly
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: roomly-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: roomly
+      POSTGRES_PASSWORD: roomly_password
+      POSTGRES_DB: roomly
+    ports:
+      - "5432:5432"
+    volumes:
+      - roomly_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  roomly_postgres_data:
+    name: roomly_roomly_postgres_data
+    external: true
