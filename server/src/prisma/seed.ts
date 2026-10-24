@@ -2,7 +2,7 @@ import { prisma } from './client';
 import bcrypt from 'bcryptjs';
 
 async function main() {
-  console.log('🌱 Starting Roomly Real-World Database Seeding...');
+  console.log('🌱 Seeding Roomly with 25 real, distinct Indian rental properties...');
 
   await prisma.review.deleteMany();
   await prisma.verificationRecord.deleteMany();
@@ -30,7 +30,6 @@ async function main() {
     { name: 'Front-Load Washing Machine', slug: 'washing-machine', icon: 'shirt', category: 'Essentials' },
     { name: 'Fully Equipped Fitness Gym', slug: 'gym', icon: 'dumbbell', category: 'Building' },
     { name: '24/7 Security & CCTV', slug: 'security', icon: 'shield-check', category: 'Safety' },
-    { name: 'Fully Furnished Interior', slug: 'furnished', icon: 'sofa', category: 'Comfort' },
     { name: '100% DG Power Backup', slug: 'power-backup', icon: 'zap', category: 'Essentials' },
     { name: 'Modular Kitchen with Chimney', slug: 'kitchen', icon: 'utensils', category: 'Essentials' },
     { name: 'Automatic High-Speed Elevator', slug: 'elevator', icon: 'arrow-up-down', category: 'Building' },
@@ -45,556 +44,63 @@ async function main() {
     amenities[item.slug] = await prisma.amenity.create({ data: item });
   }
 
-  const landlord1 = await prisma.user.create({
-    data: {
-      email: 'rajesh.sharma@example.com',
-      password: passwordHash,
-      firstName: 'Rajesh',
-      lastName: 'Sharma',
-      role: 'LANDLORD',
-      phone: '+91 98450 12345',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces',
-      isEmailVerified: true,
-      isProfileVerified: true
-    }
-  });
+  const landlord1 = await prisma.user.create({ data: { email: 'rajesh.sharma@example.com', password: passwordHash, firstName: 'Rajesh', lastName: 'Sharma', role: 'LANDLORD', phone: '+91 98450 12345', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces', isEmailVerified: true, isProfileVerified: true } });
+  const landlord2 = await prisma.user.create({ data: { email: 'priya.nair@example.com', password: passwordHash, firstName: 'Priya', lastName: 'Nair', role: 'LANDLORD', phone: '+91 98450 67890', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces', isEmailVerified: true, isProfileVerified: true } });
+  const landlord3 = await prisma.user.create({ data: { email: 'vikram.mehta@example.com', password: passwordHash, firstName: 'Vikram', lastName: 'Mehta', role: 'LANDLORD', phone: '+91 98200 45678', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces', isEmailVerified: true, isProfileVerified: true } });
+  const landlord4 = await prisma.user.create({ data: { email: 'kavitha.reddy@example.com', password: passwordHash, firstName: 'Kavitha', lastName: 'Reddy', role: 'LANDLORD', phone: '+91 99000 11223', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=faces', isEmailVerified: true, isProfileVerified: true } });
+  const landlord5 = await prisma.user.create({ data: { email: 'suresh.iyer@example.com', password: passwordHash, firstName: 'Suresh', lastName: 'Iyer', role: 'LANDLORD', phone: '+91 88900 54321', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=faces', isEmailVerified: true, isProfileVerified: true } });
 
-  const landlord2 = await prisma.user.create({
-    data: {
-      email: 'priya.nair@example.com',
-      password: passwordHash,
-      firstName: 'Priya',
-      lastName: 'Nair',
-      role: 'LANDLORD',
-      phone: '+91 98450 67890',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces',
-      isEmailVerified: true,
-      isProfileVerified: true
-    }
-  });
+  await prisma.user.create({ data: { email: 'aarav.patel@example.com', password: passwordHash, firstName: 'Aarav', lastName: 'Patel', role: 'TENANT', phone: '+91 98765 11111', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=faces', isEmailVerified: true, isProfileVerified: true, roommateProfile: { create: { budgetMin: 14000, budgetMax: 22000, preferredCity: 'Bangalore', preferredLocations: 'Koramangala, HSR Layout', occupation: 'Software Engineer', companyOrCollege: 'Flipkart', age: 25, gender: 'Male', sleepSchedule: 'NIGHT_OWL', foodPreference: 'NON_VEG', cleanliness: 4, smoking: 'NON_SMOKER', pets: 'LOVES_PETS', socialLevel: 4, guests: 'SOMETIMES', noiseTolerance: 3, bio: 'Software engineer at Flipkart. Love cooking and weekend treks.' } } } });
+  await prisma.user.create({ data: { email: 'ananya.iyer@example.com', password: passwordHash, firstName: 'Ananya', lastName: 'Iyer', role: 'TENANT', phone: '+91 98765 22222', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop&crop=faces', isEmailVerified: true, isProfileVerified: true, roommateProfile: { create: { budgetMin: 12000, budgetMax: 19000, preferredCity: 'Bangalore', preferredLocations: 'Indiranagar, Domlur', occupation: 'Product Designer', companyOrCollege: 'Swiggy', age: 24, gender: 'Female', sleepSchedule: 'EARLY_BIRD', foodPreference: 'VEG', cleanliness: 5, smoking: 'NON_SMOKER', pets: 'NO_PETS', socialLevel: 3, guests: 'RARELY', noiseTolerance: 2, bio: 'Product designer who loves indoor plants and morning yoga.' } } } });
 
-  const landlord3 = await prisma.user.create({
-    data: {
-      email: 'vikram.mehta@example.com',
-      password: passwordHash,
-      firstName: 'Vikram',
-      lastName: 'Mehta',
-      role: 'LANDLORD',
-      phone: '+91 98200 45678',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces',
-      isEmailVerified: true,
-      isProfileVerified: true
-    }
-  });
+  const props = [
+    { landlordId: landlord1.id, title: '3BHK Penthouse in 4th Block Koramangala', description: 'Top-floor penthouse in the heart of Koramangala. Wrap-around wooden balcony with city views, modular kitchen with chimney, fiber optic internet. 5 min walk to Sony World signal and vibrant cafe belt.', propertyType: 'APARTMENT', furnishing: 'FURNISHED', address: '88, 4th Cross, 4th Block, Koramangala', city: 'Bangalore', neighborhood: 'Koramangala', latitude: 12.9352, longitude: 77.6245, rent: 55000, deposit: 110000, distanceMetro: 1.2, distanceTechPark: 2.5, distanceHospital: 0.5, isVerified: true, featured: true, viewsCount: 342, rooms: [{ name: 'Master Bedroom - Wrap Balcony & Ensuite', rent: 22000, deposit: 44000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Deluxe Bedroom with City View', rent: 18000, deposit: 36000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: true, hasAC: true },{ name: 'Third Bedroom with Wardrobe', rent: 15000, deposit: 30000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&auto=format&fit=crop&q=80', caption: 'Spacious living room with floor-to-ceiling windows', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&auto=format&fit=crop&q=80', caption: 'Sunlit master bedroom with balcony', displayOrder: 1 },{ url: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1200&auto=format&fit=crop&q=80', caption: 'Modular kitchen with chimney and breakfast bar', displayOrder: 2 }], amenitySlugs: ['wifi','ac','parking','washing-machine','power-backup','balcony','security','water-purifier'] },
+    { landlordId: landlord2.id, title: '2BHK Garden Apartment near Indiranagar Metro', description: 'Ground-floor garden apartment on a leafy lane just 3 min walk from Indiranagar Metro. Private patio with jasmine creepers, pet-friendly, covered car parking. Ideal for startup founders who want calm amidst the Indiranagar buzz.', propertyType: 'APARTMENT', furnishing: 'FURNISHED', address: '412, 12th Main, 100ft Road, Indiranagar', city: 'Bangalore', neighborhood: 'Indiranagar', latitude: 12.9784, longitude: 77.6408, rent: 36000, deposit: 72000, distanceMetro: 0.3, distanceTechPark: 3.8, distanceHospital: 1.1, isVerified: true, featured: true, viewsCount: 289, rooms: [{ name: 'Garden Suite with Patio Access & Ensuite', rent: 20000, deposit: 40000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Bright Corner Room with Large Windows', rent: 16000, deposit: 32000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true }], images: [{ url: 'https://images.unsplash.com/photo-1502005229762-ae1b46000c8b?w=1200&auto=format&fit=crop&q=80', caption: 'Private garden patio', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1200&auto=format&fit=crop&q=80', caption: 'Bedroom with Scandinavian decor', displayOrder: 1 }], amenitySlugs: ['wifi','ac','parking','pet-friendly','washing-machine'] },
+    { landlordId: landlord1.id, title: 'Co-Living 3BHK for Professionals – HSR Layout Sector 2', description: 'Fully managed co-living space inside a gated society in HSR Sector 2. Dedicated workspace in every room, daily housekeeping, shared game lounge. 5 min drive to Outer Ring Road tech corridor. Community events every weekend.', propertyType: 'SHARED_ROOM', furnishing: 'FURNISHED', address: '24, 27th Main Road, Sector 2, HSR Layout', city: 'Bangalore', neighborhood: 'HSR Layout', latitude: 12.9121, longitude: 77.6446, rent: 16000, deposit: 32000, distanceMetro: 2.8, distanceTechPark: 1.8, distanceHospital: 0.9, isVerified: true, featured: false, viewsCount: 195, rooms: [{ name: 'Room A – Private Ensuite with AC & Workspace', rent: 16000, deposit: 32000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: false, hasAC: true },{ name: 'Room B – Balcony Room with Shared Bath', rent: 13500, deposit: 27000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: true, hasAC: false },{ name: 'Room C – Quiet Study Room', rent: 11500, deposit: 23000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&auto=format&fit=crop&q=80', caption: 'Shared co-living lounge', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=1200&auto=format&fit=crop&q=80', caption: 'Private bedroom with study table', displayOrder: 1 }], amenitySlugs: ['wifi','washing-machine','gym','security'] },
+    { landlordId: landlord2.id, title: 'Premium 3BHK in Prestige Shantiniketan, Whitefield', description: 'High-rise flat in Prestige Shantiniketan, one of Whitefield\'s most prestigious communities. Olympic swimming pool, squash court, tennis courts. Directly opposite Pattandur Agrahara Metro Station, ideal for ITPL employees.', propertyType: 'APARTMENT', furnishing: 'SEMI_FURNISHED', address: 'Tower B, Prestige Shantiniketan, Whitefield Main Road', city: 'Bangalore', neighborhood: 'Whitefield', latitude: 12.9892, longitude: 77.7289, rent: 42000, deposit: 84000, distanceMetro: 0.2, distanceTechPark: 0.8, distanceHospital: 1.0, isVerified: true, featured: true, viewsCount: 410, rooms: [{ name: 'Master Suite – Pool View Balcony & Ensuite', rent: 17000, deposit: 34000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Bedroom 2 – AC & Wardrobe', rent: 14000, deposit: 28000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true },{ name: 'Bedroom 3 – Standard', rent: 11000, deposit: 22000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&auto=format&fit=crop&q=80', caption: 'Prestige Shantiniketan tower and pool', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&auto=format&fit=crop&q=80', caption: 'Open-concept living room', displayOrder: 1 },{ url: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=1200&auto=format&fit=crop&q=80', caption: 'Bedroom with built-in wardrobe', displayOrder: 2 }], amenitySlugs: ['wifi','swimming-pool','gym','parking','power-backup','elevator'] },
+    { landlordId: landlord3.id, title: 'Spacious PG for Working Professionals – Electronic City Phase 1', description: 'Well-maintained PG accommodation 500m from Electronic City Phase 1 flyover. Separate floors for male and female residents. Home-cooked south Indian meals included (breakfast + dinner). Tata Fiber broadband and 24x7 security.', propertyType: 'PG', furnishing: 'FURNISHED', address: '18, 1st Cross Road, Electronic City Phase 1', city: 'Bangalore', neighborhood: 'Electronic City', latitude: 12.8459, longitude: 77.6601, rent: 9500, deposit: 19000, distanceMetro: 0.5, distanceTechPark: 0.5, distanceHospital: 2.0, isVerified: true, featured: false, viewsCount: 178, rooms: [{ name: 'Single Occupancy AC Room', rent: 9500, deposit: 19000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true },{ name: 'Double Sharing Room (per bed)', rent: 7500, deposit: 15000, totalBeds: 2, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200&auto=format&fit=crop&q=80', caption: 'Clean and bright single occupancy room', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=1200&auto=format&fit=crop&q=80', caption: 'Common dining area with home-cooked meals', displayOrder: 1 }], amenitySlugs: ['wifi','security','power-backup'] },
+    { landlordId: landlord4.id, title: 'Modern Studio Apartment – BTM Layout 2nd Stage', description: 'Compact well-designed studio flat for single working professionals. Fully air-conditioned, attached kitchen, hot water geyser, and building Wi-Fi. Walking distance to BTM Layout bus stop and Meenakshi Mall.', propertyType: 'STUDIO', furnishing: 'FURNISHED', address: '34, 6th Main Road, BTM 2nd Stage', city: 'Bangalore', neighborhood: 'BTM Layout', latitude: 12.9166, longitude: 77.6101, rent: 14000, deposit: 28000, distanceMetro: 1.5, distanceTechPark: 3.0, distanceHospital: 1.2, isVerified: true, featured: false, viewsCount: 132, rooms: [{ name: 'Studio Unit with Kitchenette', rent: 14000, deposit: 28000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: false, hasAC: true }], images: [{ url: 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=1200&auto=format&fit=crop&q=80', caption: 'Minimalist studio with built-in storage', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1574643156929-51fa098b0394?w=1200&auto=format&fit=crop&q=80', caption: 'Compact kitchen and dining nook', displayOrder: 1 }], amenitySlugs: ['wifi','ac','water-purifier'] },
+    { landlordId: landlord3.id, title: '2BHK Heritage Flat in Pali Hill, Bandra West', description: 'Rare pre-independence heritage apartment on Zig Zag Road, Pali Hill. Original Burma teak flooring, 12-foot ceilings, Arabian Sea breeze cross ventilation. Walking distance from Carter Road promenade and Bandra Bandstand.', propertyType: 'APARTMENT', furnishing: 'FURNISHED', address: '14, Zig Zag Road, Pali Hill, Bandra West', city: 'Mumbai', neighborhood: 'Bandra West', latitude: 19.0607, longitude: 72.8258, rent: 68000, deposit: 150000, distanceMetro: 2.1, distanceTechPark: 4.5, distanceHospital: 0.8, isVerified: true, featured: true, viewsCount: 520, rooms: [{ name: 'Heritage Pali Suite – Sea Breeze & Ensuite', rent: 38000, deposit: 80000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Artisan Bedroom – Teak Floors & Vintage Shutters', rent: 30000, deposit: 70000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true }], images: [{ url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=80', caption: 'Heritage living room with Burma teak floors', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&auto=format&fit=crop&q=80', caption: 'Master bedroom with vintage wooden windows', displayOrder: 1 },{ url: 'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=1200&auto=format&fit=crop&q=80', caption: 'Art Deco dining area', displayOrder: 2 }], amenitySlugs: ['wifi','ac','security','pet-friendly'] },
+    { landlordId: landlord5.id, title: '1BHK Flat near Versova Beach, Andheri West', description: 'Bright 1BHK just 1 km from Versova Beach and 200m from Versova Metro. Recently renovated with modular kitchen, Italian tile flooring, split AC. Perfect for media and entertainment industry professionals.', propertyType: 'APARTMENT', furnishing: 'SEMI_FURNISHED', address: '5/A, New Link Road, Andheri West', city: 'Mumbai', neighborhood: 'Andheri West', latitude: 19.1424, longitude: 72.8231, rent: 32000, deposit: 64000, distanceMetro: 0.2, distanceTechPark: 5.0, distanceHospital: 1.5, isVerified: true, featured: false, viewsCount: 203, rooms: [{ name: 'Main Bedroom with Split AC & Balcony', rent: 32000, deposit: 64000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true }], images: [{ url: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&auto=format&fit=crop&q=80', caption: 'Bright living room with large balcony doors', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=1200&auto=format&fit=crop&q=80', caption: 'Modular kitchen with Italian tiles', displayOrder: 1 }], amenitySlugs: ['wifi','ac','parking','elevator'] },
+    { landlordId: landlord4.id, title: '2BHK in Hiranandani Gardens, Powai', description: 'Well-maintained 2BHK in sought-after Hiranandani Gardens township. Serene lake-facing view, lush greenery, self-sufficient township with malls, schools, hospitals. Ideal for families and senior tech professionals.', propertyType: 'APARTMENT', furnishing: 'FURNISHED', address: 'Palencia Building, Hiranandani Gardens, Powai', city: 'Mumbai', neighborhood: 'Powai', latitude: 19.1176, longitude: 72.9060, rent: 48000, deposit: 96000, distanceMetro: 3.0, distanceTechPark: 1.0, distanceHospital: 0.5, isVerified: true, featured: true, viewsCount: 367, rooms: [{ name: 'Lake-Facing Master Room with Ensuite', rent: 26000, deposit: 52000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Second Bedroom with Garden View', rent: 22000, deposit: 44000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true }], images: [{ url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&auto=format&fit=crop&q=80', caption: 'Hiranandani Gardens tower with lake view', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=1200&auto=format&fit=crop&q=80', caption: 'Bedroom with lake-facing balcony', displayOrder: 1 }], amenitySlugs: ['wifi','swimming-pool','gym','parking','security'] },
+    { landlordId: landlord3.id, title: '3BHK in Financial District, Gachibowli', description: 'Ultra-modern apartment 5 min from Amazon, Microsoft, and Google campuses in Gachibowli. Society with squash court, badminton court, and jogging track. Reserved basement parking with 24x7 CCTV surveillance.', propertyType: 'APARTMENT', furnishing: 'FURNISHED', address: 'My Home Bhooja Tower A, Gachibowli', city: 'Hyderabad', neighborhood: 'Gachibowli', latitude: 17.4399, longitude: 78.3685, rent: 38000, deposit: 76000, distanceMetro: 3.5, distanceTechPark: 0.5, distanceHospital: 1.2, isVerified: true, featured: true, viewsCount: 260, rooms: [{ name: 'Master Room – Glass Balcony & Ensuite', rent: 15000, deposit: 30000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Bedroom 2 – WFH Setup', rent: 13000, deposit: 26000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true },{ name: 'Bedroom 3 – Standard', rent: 10000, deposit: 20000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&auto=format&fit=crop&q=80', caption: 'Spacious living room with premium furniture', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&auto=format&fit=crop&q=80', caption: 'Master bedroom with glass balcony', displayOrder: 1 }], amenitySlugs: ['wifi','ac','parking','swimming-pool','power-backup'] },
+    { landlordId: landlord4.id, title: '2BHK Semi-Furnished Flat in Kondapur', description: 'Well-maintained 2BHK on the 4th floor with excellent cross-ventilation in Kondapur. 2 min walk to Mindspace Techno Park buses. Children\'s play area and power backup. Direct owners, brokers not entertained.', propertyType: 'APARTMENT', furnishing: 'SEMI_FURNISHED', address: '7th Block, Kondapur, Near Mindspace Junction', city: 'Hyderabad', neighborhood: 'Kondapur', latitude: 17.4600, longitude: 78.3615, rent: 24000, deposit: 48000, distanceMetro: 2.0, distanceTechPark: 0.2, distanceHospital: 1.8, isVerified: true, featured: false, viewsCount: 142, rooms: [{ name: 'Master Bedroom with Attached Bath', rent: 13000, deposit: 26000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: false },{ name: 'Bedroom 2 with Common Bath', rent: 11000, deposit: 22000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1560185008-a33f5c7a91d8?w=1200&auto=format&fit=crop&q=80', caption: 'Living area with natural light', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&auto=format&fit=crop&q=80', caption: 'Bedroom with built-in wardrobe', displayOrder: 1 }], amenitySlugs: ['security','power-backup','parking'] },
+    { landlordId: landlord5.id, title: 'Premium Girls PG near Hitec City – Madhapur', description: 'Safe girls-only PG accommodation in Madhapur, 700m from Hitec City Metro. CCTV on all floors, biometric entry, in-house warden. South Indian and North Indian meals thrice daily. Washing machine on every floor.', propertyType: 'PG', furnishing: 'FURNISHED', address: '24, Road No. 2, Jubilee Hills Extension, Madhapur', city: 'Hyderabad', neighborhood: 'Madhapur', latitude: 17.4486, longitude: 78.3908, rent: 10000, deposit: 20000, distanceMetro: 0.7, distanceTechPark: 1.0, distanceHospital: 1.5, isVerified: true, featured: false, viewsCount: 98, rooms: [{ name: 'Single Occupancy with AC', rent: 10000, deposit: 20000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true },{ name: 'Twin Sharing (per bed)', rent: 7500, deposit: 15000, totalBeds: 2, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1583416750470-965b2707b355?w=1200&auto=format&fit=crop&q=80', caption: 'Clean single occupancy room with storage', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=1200&auto=format&fit=crop&q=80', caption: 'Common dining hall', displayOrder: 1 }], amenitySlugs: ['wifi','security','washing-machine'] },
+    { landlordId: landlord1.id, title: '2BHK Luxury Apartment in Baner with Terrace Access', description: 'Freshly renovated 2BHK on the top floor with exclusive access to a 1200 sqft terrace garden. Stunning views of the Sahyadri hills. Marble flooring, modular kitchen, newly installed split ACs. Walk to Balewadi High Street restaurants.', propertyType: 'APARTMENT', furnishing: 'FURNISHED', address: '16, Baner Gaon Road, Near Balewadi High Street', city: 'Pune', neighborhood: 'Baner', latitude: 18.5590, longitude: 73.7868, rent: 29000, deposit: 58000, distanceMetro: 4.0, distanceTechPark: 3.5, distanceHospital: 2.0, isVerified: true, featured: true, viewsCount: 224, rooms: [{ name: 'Master Bedroom with Terrace Access', rent: 16000, deposit: 32000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Bedroom 2 with Hill View', rent: 13000, deposit: 26000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true }], images: [{ url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&auto=format&fit=crop&q=80', caption: 'Terrace garden with Sahyadri hill views', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200&auto=format&fit=crop&q=80', caption: 'Modular kitchen with dishwasher', displayOrder: 1 }], amenitySlugs: ['wifi','ac','kitchen','balcony','security'] },
+    { landlordId: landlord2.id, title: '3BHK Apartment near Hinjewadi IT Park, Pune', description: 'Spacious 3BHK a 10-min walk from Hinjewadi Phase 1 IT Park. Society has swimming pool, gymnasium, and 24x7 gated security. Society shuttle available to Phase 1 and Phase 2 tech parks. New building (2022).', propertyType: 'APARTMENT', furnishing: 'SEMI_FURNISHED', address: 'Tower 3, Kolte Patil Life Republic, Hinjewadi', city: 'Pune', neighborhood: 'Hinjewadi', latitude: 18.5912, longitude: 73.7389, rent: 27000, deposit: 54000, distanceMetro: 6.0, distanceTechPark: 0.5, distanceHospital: 3.0, isVerified: true, featured: false, viewsCount: 166, rooms: [{ name: 'Master Room with Pool View Balcony', rent: 11000, deposit: 22000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: false },{ name: 'Bedroom 2', rent: 9000, deposit: 18000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false },{ name: 'Bedroom 3', rent: 7000, deposit: 14000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1548864880-a1a3c5dfff6b?w=1200&auto=format&fit=crop&q=80', caption: 'Tower exterior with landscaped gardens', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1200&auto=format&fit=crop&q=80', caption: 'Spacious living hall with natural light', displayOrder: 1 }], amenitySlugs: ['wifi','swimming-pool','gym','security','parking'] },
+    { landlordId: landlord5.id, title: 'Independent 4BHK Bungalow in Kothrud, Pune', description: 'Charming 4-bedroom independent bungalow in Kothrud\'s quietest pocket. Private garden, two-car garage, rooftop sit-out, and servant quarter. Family-friendly, 2 km from Nal Stop Metro. Pets warmly welcomed.', propertyType: 'HOUSE', furnishing: 'SEMI_FURNISHED', address: '3, Sinhagad Road, Opposite Rajaram Bridge, Kothrud', city: 'Pune', neighborhood: 'Kothrud', latitude: 18.5071, longitude: 73.8124, rent: 55000, deposit: 110000, distanceMetro: 2.0, distanceTechPark: 7.0, distanceHospital: 1.0, isVerified: true, featured: true, viewsCount: 189, rooms: [{ name: 'Master Suite with Garden View & Ensuite', rent: 18000, deposit: 36000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Bedroom 2 – Parents Room', rent: 14000, deposit: 28000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false },{ name: 'Bedroom 3', rent: 12000, deposit: 24000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false },{ name: 'Bedroom 4 / Study Room', rent: 11000, deposit: 22000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&auto=format&fit=crop&q=80', caption: 'Bungalow exterior with private garden', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1615874694520-474822394e73?w=1200&auto=format&fit=crop&q=80', caption: 'Kitchen with granite countertops', displayOrder: 1 }], amenitySlugs: ['wifi','parking','pet-friendly','security','water-purifier'] },
+    { landlordId: landlord4.id, title: '2BHK Apartment in Velachery, Near IT Expressway', description: 'Ready-to-move 2BHK in Velachery near IT Expressway. Vastu-compliant east-facing hall, vitrified tile flooring, modular kitchen. Ground-floor unit with garden view. Well-connected with Velachery MRTS and bus terminus.', propertyType: 'APARTMENT', furnishing: 'SEMI_FURNISHED', address: '12, Gandhi Nagar, 100 Feet Road, Velachery', city: 'Chennai', neighborhood: 'Velachery', latitude: 12.9822, longitude: 80.2209, rent: 22000, deposit: 44000, distanceMetro: 1.0, distanceTechPark: 2.5, distanceHospital: 1.5, isVerified: true, featured: false, viewsCount: 111, rooms: [{ name: 'East-Facing Master Bedroom with Attached Bath', rent: 12000, deposit: 24000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: false, hasAC: false },{ name: 'Bedroom 2 with Garden View', rent: 10000, deposit: 20000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&auto=format&fit=crop&q=80', caption: 'Living room with vitrified tile flooring', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1556020685-ae41abfc9365?w=1200&auto=format&fit=crop&q=80', caption: 'Bedroom with large windows', displayOrder: 1 }], amenitySlugs: ['parking','security','power-backup'] },
+    { landlordId: landlord1.id, title: '3BHK Gated Community Flat on OMR IT Corridor, Chennai', description: 'Contemporary 3BHK in a gated community on Old Mahabalipuram Road (OMR), Chennai\'s prime IT corridor. Society has jogging track, amphitheatre, and splash pool. 5 min drive to Tidel Park and SIPCOT IT Park.', propertyType: 'APARTMENT', furnishing: 'FURNISHED', address: 'Prestige Bella Vista, OMR, Perungudi', city: 'Chennai', neighborhood: 'OMR Perungudi', latitude: 12.9659, longitude: 80.2418, rent: 34000, deposit: 68000, distanceMetro: 3.0, distanceTechPark: 1.0, distanceHospital: 2.0, isVerified: true, featured: true, viewsCount: 198, rooms: [{ name: 'Master Room with AC & Ensuite', rent: 14000, deposit: 28000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Bedroom 2', rent: 11000, deposit: 22000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false },{ name: 'Bedroom 3', rent: 9000, deposit: 18000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&auto=format&fit=crop&q=80', caption: 'Modern gated community exterior', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1200&auto=format&fit=crop&q=80', caption: 'Furnished living room', displayOrder: 1 }], amenitySlugs: ['wifi','ac','swimming-pool','gym','parking','power-backup'] },
+    { landlordId: landlord2.id, title: 'Executive PG near Pondy Bazaar, T Nagar', description: 'Premium co-living PG for working professionals in T Nagar. 5-min walk to Pondy Bazaar Metro. Fully air-conditioned rooms, 200 Mbps Wi-Fi, daily housekeeping, optional south Indian meals. Separate washing machines per floor.', propertyType: 'PG', furnishing: 'FURNISHED', address: '41, Usman Road, T Nagar', city: 'Chennai', neighborhood: 'T Nagar', latitude: 13.0418, longitude: 80.2341, rent: 12000, deposit: 24000, distanceMetro: 0.5, distanceTechPark: 5.0, distanceHospital: 1.0, isVerified: true, featured: false, viewsCount: 87, rooms: [{ name: 'AC Single Occupancy Room with Attached Bath', rent: 12000, deposit: 24000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: false, hasAC: true },{ name: 'Double Sharing Non-AC Room (per bed)', rent: 7500, deposit: 15000, totalBeds: 2, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200&auto=format&fit=crop&q=80', caption: 'Bright single occupancy AC room', displayOrder: 0, isCover: true }], amenitySlugs: ['wifi','ac','washing-machine','security'] },
+    { landlordId: landlord5.id, title: '3BHK Independent Builder Floor – Dwarka Sector 12, Delhi', description: 'Spacious 3BHK builder floor on a quiet sector road in Dwarka. 1 km from Dwarka Sector 12 Metro (Blue Line). Terrace and private parking included. DDA flat neighbourhood policy, stable power and piped gas. Ideal for government employees.', propertyType: 'APARTMENT', furnishing: 'SEMI_FURNISHED', address: 'J-147, Sector 12, Dwarka, New Delhi', city: 'Delhi', neighborhood: 'Dwarka', latitude: 28.5923, longitude: 77.0460, rent: 32000, deposit: 64000, distanceMetro: 1.0, distanceTechPark: 8.0, distanceHospital: 2.0, isVerified: true, featured: false, viewsCount: 134, rooms: [{ name: 'Master Room with Attached Bath & Balcony', rent: 14000, deposit: 28000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Bedroom 2 with Common Bath', rent: 11000, deposit: 22000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false },{ name: 'Bedroom 3 / Kids Room', rent: 7000, deposit: 14000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1200&auto=format&fit=crop&q=80', caption: 'Independent builder floor in Dwarka', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&auto=format&fit=crop&q=80', caption: 'Living room with terrace access', displayOrder: 1 }], amenitySlugs: ['parking','security','power-backup'] },
+    { landlordId: landlord3.id, title: '2BHK High-Floor Flat in Amrapali Silicon City, Noida Sector 76', description: 'Lovely 2BHK on the 12th floor in Amrapali Silicon City, overlooking the Noida-Greater Noida Expressway. Stunning unobstructed views, excellent cross ventilation. Close to Noida Sector 76 and Sector 101 Metro stations.', propertyType: 'APARTMENT', furnishing: 'SEMI_FURNISHED', address: 'Tower 5, Amrapali Silicon City, Sector 76, Noida', city: 'Noida', neighborhood: 'Sector 76', latitude: 28.5830, longitude: 77.3773, rent: 20000, deposit: 40000, distanceMetro: 0.8, distanceTechPark: 1.5, distanceHospital: 2.5, isVerified: true, featured: false, viewsCount: 119, rooms: [{ name: 'Master Bedroom with Balcony & Expressway View', rent: 11000, deposit: 22000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Bedroom 2 with Wardrobe', rent: 9000, deposit: 18000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1200&auto=format&fit=crop&q=80', caption: 'High-floor apartment with expressway views', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1560440021-33f9b867899d?w=1200&auto=format&fit=crop&q=80', caption: 'Living area with balcony doors open', displayOrder: 1 }], amenitySlugs: ['wifi','gym','security','parking'] },
+    { landlordId: landlord4.id, title: 'Premium Studio near DLF Cyber City, Gurgaon', description: 'Ultra-modern fully furnished studio a 5-min walk from Cyber City DLF Phase 2. Equipped with inverter AC, smart TV, fully fitted kitchen, high-speed broadband, and building CCTV. Pet-friendly building.', propertyType: 'STUDIO', furnishing: 'FURNISHED', address: 'Imperia Esfera Tower, DLF Phase 2, Gurugram', city: 'Gurgaon', neighborhood: 'DLF Phase 2', latitude: 28.4972, longitude: 77.0902, rent: 30000, deposit: 60000, distanceMetro: 1.0, distanceTechPark: 0.5, distanceHospital: 2.0, isVerified: true, featured: true, viewsCount: 243, rooms: [{ name: 'Studio Unit – Fully Equipped & Furnished', rent: 30000, deposit: 60000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true }], images: [{ url: 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=1200&auto=format&fit=crop&q=80', caption: 'Modern studio with smart storage', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1615873968403-89e068629265?w=1200&auto=format&fit=crop&q=80', caption: 'Fully equipped kitchenette', displayOrder: 1 }], amenitySlugs: ['wifi','ac','security','elevator','pet-friendly'] },
+    { landlordId: landlord5.id, title: '2BHK Ground Floor House Portion in Jayanagar 4th Block', description: 'Quiet ground-floor house portion in Jayanagar 4th Block. Private entrance, large sit-out veranda, well-maintained compound, small vegetable garden. Walking distance to Jayanagar Shopping Complex and Lalbagh.', propertyType: 'HOUSE', furnishing: 'SEMI_FURNISHED', address: '22, 12th Cross, 4th Block, Jayanagar', city: 'Bangalore', neighborhood: 'Jayanagar', latitude: 12.9250, longitude: 77.5838, rent: 28000, deposit: 56000, distanceMetro: 1.8, distanceTechPark: 5.0, distanceHospital: 0.8, isVerified: true, featured: false, viewsCount: 156, rooms: [{ name: 'Master Bedroom with Veranda Access & Ensuite', rent: 16000, deposit: 32000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: false },{ name: 'Second Bedroom', rent: 12000, deposit: 24000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&auto=format&fit=crop&q=80', caption: 'Traditional Bangalore house with veranda', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1564540586988-aa4e53c3d799?w=1200&auto=format&fit=crop&q=80', caption: 'Spacious bedroom with natural light', displayOrder: 1 }], amenitySlugs: ['parking','security','water-purifier'] },
+    { landlordId: landlord3.id, title: '2BHK Furnished Flat in Brigade Meadows, Bellandur', description: 'Modern 2BHK in Brigade Meadows gated township near Bellandur. Society has indoor badminton, table tennis, swimming pool, and restaurants. Directly connected to Sarjapur Road and Outer Ring Road.', propertyType: 'APARTMENT', furnishing: 'FURNISHED', address: 'Brigade Meadows Block C, Kanakapura Road Extension, Bellandur', city: 'Bangalore', neighborhood: 'Bellandur', latitude: 12.9270, longitude: 77.6840, rent: 30000, deposit: 60000, distanceMetro: 3.5, distanceTechPark: 2.0, distanceHospital: 1.5, isVerified: true, featured: false, viewsCount: 174, rooms: [{ name: 'Master Bedroom with AC & Ensuite', rent: 17000, deposit: 34000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },{ name: 'Second Bedroom', rent: 13000, deposit: 26000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1574643156929-51fa098b0394?w=1200&auto=format&fit=crop&q=80', caption: 'Furnished living room with sofa set', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1505692433770-36f19f51681d?w=1200&auto=format&fit=crop&q=80', caption: 'Bedroom with premium mattress and wardrobe', displayOrder: 1 }], amenitySlugs: ['wifi','swimming-pool','gym','parking','security'] },
+    { landlordId: landlord1.id, title: '3BHK Spacious Flat in Lodha Palava, Dombivli', description: 'Magnificent 3BHK in Lodha Palava City. 32-acre lake, world-class amenities including cricket academy, tennis courts, 5-star clubhouse. 55 min from CST by train (Dombivli Station).', propertyType: 'APARTMENT', furnishing: 'SEMI_FURNISHED', address: 'Lodha Palava, Dombivli East, Thane District', city: 'Mumbai', neighborhood: 'Dombivli', latitude: 19.2183, longitude: 73.0865, rent: 28000, deposit: 56000, distanceMetro: 1.5, distanceTechPark: 15.0, distanceHospital: 1.0, isVerified: true, featured: false, viewsCount: 145, rooms: [{ name: 'Master Bedroom with Lake Views Balcony', rent: 12000, deposit: 24000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: false },{ name: 'Bedroom 2', rent: 10000, deposit: 20000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false },{ name: 'Bedroom 3 / Study', rent: 6000, deposit: 12000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1548864880-a1a3c5dfff6b?w=1200&auto=format&fit=crop&q=80', caption: 'Lodha Palava township with lake view', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&auto=format&fit=crop&q=80', caption: 'Bright living room with large windows', displayOrder: 1 }], amenitySlugs: ['swimming-pool','gym','parking','security','elevator'] },
+    { landlordId: landlord2.id, title: '1BHK Budget Apartment near Marathahalli Bridge', description: 'Affordable clean 1BHK apartment within 5 min of Marathahalli Bridge. Ground floor with 24x7 water supply. Ideal for freshers joining companies on the Outer Ring Road tech corridor.', propertyType: 'APARTMENT', furnishing: 'UNFURNISHED', address: '78, Varthur Hobli, Near Marathahalli Bridge', city: 'Bangalore', neighborhood: 'Marathahalli', latitude: 12.9559, longitude: 77.7012, rent: 13000, deposit: 26000, distanceMetro: 2.5, distanceTechPark: 1.0, distanceHospital: 1.8, isVerified: true, featured: false, viewsCount: 89, rooms: [{ name: 'Bedroom with Balcony & Common Bath', rent: 13000, deposit: 26000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: true, hasAC: false }], images: [{ url: 'https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=1200&auto=format&fit=crop&q=80', caption: 'Clean 1BHK with natural light', displayOrder: 0, isCover: true },{ url: 'https://images.unsplash.com/photo-1556020685-ae41abfc9365?w=1200&auto=format&fit=crop&q=80', caption: 'Bedroom with large window', displayOrder: 1 }], amenitySlugs: ['security','power-backup'] },
+  ];
 
-  const tenant1 = await prisma.user.create({
-    data: {
-      email: 'aarav.patel@example.com',
-      password: passwordHash,
-      firstName: 'Aarav',
-      lastName: 'Patel',
-      role: 'TENANT',
-      phone: '+91 98765 11111',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=faces',
-      isEmailVerified: true,
-      isProfileVerified: true,
-      roommateProfile: {
-        create: {
-          budgetMin: 14000,
-          budgetMax: 22000,
-          preferredCity: 'Bangalore',
-          preferredLocations: 'Koramangala, HSR Layout, Indiranagar',
-          occupation: 'Senior Frontend Developer',
-          companyOrCollege: 'Flipkart',
-          age: 25,
-          gender: 'Male',
-          sleepSchedule: 'NIGHT_OWL',
-          foodPreference: 'NON_VEG',
-          cleanliness: 4,
-          smoking: 'NON_SMOKER',
-          pets: 'LOVES_PETS',
-          socialLevel: 4,
-          guests: 'SOMETIMES',
-          noiseTolerance: 3,
-          bio: 'Frontend engineer at Flipkart. Enjoy cooking pasta on weekends, tech podcasts, and keeping common areas tidy. Looking for friendly, respectful flatmates.'
-        }
+  for (const prop of props) {
+    const { rooms, images, amenitySlugs, ...propData } = prop;
+    await prisma.property.create({
+      data: {
+        ...propData,
+        status: 'ACTIVE',
+        availableFrom: new Date(),
+        rooms: { create: rooms },
+        images: { create: images },
+        amenities: { create: amenitySlugs.map((slug: string) => ({ amenity: { connect: { id: amenities[slug].id } } })) },
       }
-    }
-  });
+    });
+    console.log(`  ✓ Created: ${propData.title}`);
+  }
 
-  const tenant2 = await prisma.user.create({
-    data: {
-      email: 'ananya.iyer@example.com',
-      password: passwordHash,
-      firstName: 'Ananya',
-      lastName: 'Iyer',
-      role: 'TENANT',
-      phone: '+91 98765 22222',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop&crop=faces',
-      isEmailVerified: true,
-      isProfileVerified: true,
-      roommateProfile: {
-        create: {
-          budgetMin: 12000,
-          budgetMax: 19000,
-          preferredCity: 'Bangalore',
-          preferredLocations: 'Indiranagar, Domlur, Old Airport Road',
-          occupation: 'Product Designer',
-          companyOrCollege: 'Swiggy',
-          age: 24,
-          gender: 'Female',
-          sleepSchedule: 'EARLY_BIRD',
-          foodPreference: 'VEG',
-          cleanliness: 5,
-          smoking: 'NON_SMOKER',
-          pets: 'NO_PETS',
-          socialLevel: 3,
-          guests: 'RARELY',
-          noiseTolerance: 2,
-          bio: 'Product designer obsessed with neat spaces, indoor plants, and yoga in the morning. Looking for a quiet, organized home with peaceful vibes.'
-        }
-      }
-    }
-  });
-
-  const tenant3 = await prisma.user.create({
-    data: {
-      email: 'rohan.deshmukh@example.com',
-      password: passwordHash,
-      firstName: 'Rohan',
-      lastName: 'Deshmukh',
-      role: 'TENANT',
-      phone: '+91 98210 33333',
-      avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop&crop=faces',
-      isEmailVerified: true,
-      isProfileVerified: true,
-      roommateProfile: {
-        create: {
-          budgetMin: 18000,
-          budgetMax: 28000,
-          preferredCity: 'Mumbai',
-          preferredLocations: 'Bandra West, Khar, Santacruz',
-          occupation: 'Brand Strategist',
-          companyOrCollege: 'Ogilvy',
-          age: 27,
-          gender: 'Male',
-          sleepSchedule: 'FLEXIBLE',
-          foodPreference: 'FLEXIBLE',
-          cleanliness: 4,
-          smoking: 'OUTSIDE_ONLY',
-          pets: 'LOVES_PETS',
-          socialLevel: 4,
-          guests: 'SOMETIMES',
-          noiseTolerance: 3,
-          bio: 'Ad agency strategist in Mumbai. Love coffee walks around Bandra, music production, and weekend movie nights with roommates.'
-        }
-      }
-    }
-  });
-
-  const tenant4 = await prisma.user.create({
-    data: {
-      email: 'sneha.reddy@example.com',
-      password: passwordHash,
-      firstName: 'Sneha',
-      lastName: 'Reddy',
-      role: 'TENANT',
-      phone: '+91 98490 44444',
-      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop&crop=faces',
-      isEmailVerified: true,
-      isProfileVerified: true,
-      roommateProfile: {
-        create: {
-          budgetMin: 10000,
-          budgetMax: 16000,
-          preferredCity: 'Hyderabad',
-          preferredLocations: 'Gachibowli, Hitec City, Madhapur',
-          occupation: 'Data Analyst',
-          companyOrCollege: 'Deloitte',
-          age: 23,
-          gender: 'Female',
-          sleepSchedule: 'EARLY_BIRD',
-          foodPreference: 'NON_VEG',
-          cleanliness: 5,
-          smoking: 'NON_SMOKER',
-          pets: 'NO_PETS',
-          socialLevel: 3,
-          guests: 'RARELY',
-          noiseTolerance: 3,
-          bio: 'Consultant at Deloitte Gachibowli. Quiet, focused, enjoy badminton on weekends and keeping kitchen spotless.'
-        }
-      }
-    }
-  });
-
-  const p1 = await prisma.property.create({
-    data: {
-      landlordId: landlord1.id,
-      title: 'Modern 3BHK Penthouse in 4th Block Koramangala',
-      description: 'Sunlit and fully furnished 3BHK penthouse with spacious wooden balcony, modular kitchen, and ultra high-speed fiber internet. Located 5 minutes from Sony World signal, walking distance to Wipro Park and top cafes.',
-      propertyType: 'APARTMENT',
-      furnishing: 'FURNISHED',
-      address: '88, 4th Cross, 4th Block Koramangala',
-      city: 'Bangalore',
-      neighborhood: 'Koramangala',
-      latitude: 12.9352,
-      longitude: 77.6245,
-      rent: 48000,
-      deposit: 96000,
-      distanceMetro: 1.2,
-      distanceCollege: 0.8,
-      distanceTechPark: 2.5,
-      distanceHospital: 0.5,
-      isVerified: true,
-      featured: true,
-      viewsCount: 342,
-      rooms: {
-        create: [
-          { name: 'Master Bedroom with Ensuite Bath & Balcony', rent: 18000, deposit: 36000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },
-          { name: 'Deluxe Bedroom with Work Desk', rent: 16000, deposit: 32000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true },
-          { name: 'Cozy Room with Wardrobe', rent: 14000, deposit: 28000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }
-        ]
-      },
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1000&auto=format&fit=crop&q=80', caption: 'Spacious living room with large glass windows', displayOrder: 0, isCover: true },
-          { url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1000&auto=format&fit=crop&q=80', caption: 'Sunlit Master bedroom with balcony access', displayOrder: 1 },
-          { url: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1000&auto=format&fit=crop&q=80', caption: 'Modern kitchen with chimney & breakfast counter', displayOrder: 2 },
-          { url: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1000&auto=format&fit=crop&q=80', caption: 'Attached modern washroom with glass partition', displayOrder: 3 }
-        ]
-      },
-      amenities: {
-        create: [
-          { amenity: { connect: { id: amenities['wifi'].id } } },
-          { amenity: { connect: { id: amenities['ac'].id } } },
-          { amenity: { connect: { id: amenities['parking'].id } } },
-          { amenity: { connect: { id: amenities['washing-machine'].id } } },
-          { amenity: { connect: { id: amenities['power-backup'].id } } },
-          { amenity: { connect: { id: amenities['security'].id } } },
-          { amenity: { connect: { id: amenities['balcony'].id } } },
-          { amenity: { connect: { id: amenities['water-purifier'].id } } }
-        ]
-      }
-    }
-  });
-
-  const p2 = await prisma.property.create({
-    data: {
-      landlordId: landlord2.id,
-      title: 'Chic 2BHK Garden Apartment on 100ft Road Indiranagar',
-      description: '3 minutes walk from Indiranagar Metro Station. Leafy quiet street with private patio, dedicated covered car parking, and pet-friendly society. Ideal for startup founders and creative professionals.',
-      propertyType: 'APARTMENT',
-      furnishing: 'FURNISHED',
-      address: '412, 12th Main, 100ft Road, Indiranagar',
-      city: 'Bangalore',
-      neighborhood: 'Indiranagar',
-      latitude: 12.9784,
-      longitude: 77.6408,
-      rent: 36000,
-      deposit: 72000,
-      distanceMetro: 0.3,
-      distanceCollege: 2.1,
-      distanceTechPark: 3.8,
-      distanceHospital: 1.1,
-      isVerified: true,
-      featured: true,
-      viewsCount: 289,
-      rooms: {
-        create: [
-          { name: 'Garden Facing Suite with Attached Bath', rent: 19000, deposit: 38000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },
-          { name: 'Bright Corner Room with Workstation', rent: 17000, deposit: 34000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true }
-        ]
-      },
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1502005229762-ae1b46000c8b?w=1000&auto=format&fit=crop&q=80', caption: 'Garden apartment patio view', displayOrder: 0, isCover: true },
-          { url: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1000&auto=format&fit=crop&q=80', caption: 'Scandinavian bedroom with queen bed', displayOrder: 1 },
-          { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1000&auto=format&fit=crop&q=80', caption: 'Building exterior & tree cover', displayOrder: 2 }
-        ]
-      },
-      amenities: {
-        create: [
-          { amenity: { connect: { id: amenities['wifi'].id } } },
-          { amenity: { connect: { id: amenities['ac'].id } } },
-          { amenity: { connect: { id: amenities['parking'].id } } },
-          { amenity: { connect: { id: amenities['pet-friendly'].id } } },
-          { amenity: { connect: { id: amenities['power-backup'].id } } }
-        ]
-      }
-    }
-  });
-
-  const p3 = await prisma.property.create({
-    data: {
-      landlordId: landlord1.id,
-      title: 'Smart 3BHK Serviced Co-Living in HSR Sector 2',
-      description: 'Fully serviced shared apartment for young professionals. Includes high-speed Wi-Fi, daily housekeeping, washing machine, and dedicated workspace in every room. 5 mins drive to Outer Ring Road tech parks.',
-      propertyType: 'SHARED_ROOM',
-      furnishing: 'FURNISHED',
-      address: '24, 27th Main Rd, HSR Layout Sector 2',
-      city: 'Bangalore',
-      neighborhood: 'HSR Layout',
-      latitude: 12.9121,
-      longitude: 77.6446,
-      rent: 39000,
-      deposit: 78000,
-      distanceMetro: 2.8,
-      distanceCollege: 1.5,
-      distanceTechPark: 1.8,
-      distanceHospital: 0.9,
-      isVerified: true,
-      featured: false,
-      viewsCount: 195,
-      rooms: {
-        create: [
-          { name: 'Room Alpha (Private Bath + AC)', rent: 14500, deposit: 29000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: false, hasAC: true },
-          { name: 'Room Beta (Attached Balcony)', rent: 13000, deposit: 26000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: true, hasAC: false },
-          { name: 'Room Gamma (Quiet Study Room)', rent: 11500, deposit: 23000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }
-        ]
-      },
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1000&auto=format&fit=crop&q=80', caption: 'Co-living living lounge', displayOrder: 0, isCover: true },
-          { url: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=1000&auto=format&fit=crop&q=80', caption: 'Bedroom with ergonomic chair', displayOrder: 1 }
-        ]
-      },
-      amenities: {
-        create: [
-          { amenity: { connect: { id: amenities['wifi'].id } } },
-          { amenity: { connect: { id: amenities['washing-machine'].id } } },
-          { amenity: { connect: { id: amenities['gym'].id } } },
-          { amenity: { connect: { id: amenities['security'].id } } }
-        ]
-      }
-    }
-  });
-
-  const p4 = await prisma.property.create({
-    data: {
-      landlordId: landlord2.id,
-      title: 'Luxury 3BHK Gated Society Flat near ITPL Whitefield',
-      description: 'High-rise apartment inside a premium society with clubhouse, olympic swimming pool, tennis court, and power backup. Directly opposite Pattandur Agrahara Metro Station.',
-      propertyType: 'APARTMENT',
-      furnishing: 'SEMI_FURNISHED',
-      address: 'Tower B, Prestige Shantiniketan, Whitefield Main Rd',
-      city: 'Bangalore',
-      neighborhood: 'Whitefield',
-      latitude: 12.9892,
-      longitude: 77.7289,
-      rent: 42000,
-      deposit: 84000,
-      distanceMetro: 0.2,
-      distanceCollege: 3.0,
-      distanceTechPark: 0.8,
-      distanceHospital: 1.0,
-      isVerified: true,
-      featured: true,
-      viewsCount: 410,
-      rooms: {
-        create: [
-          { name: 'Sky-view Master Room with Attached Bath', rent: 16000, deposit: 32000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },
-          { name: 'Spacious Bedroom 2', rent: 14000, deposit: 28000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true },
-          { name: 'Spacious Bedroom 3', rent: 12000, deposit: 24000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }
-        ]
-      },
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1000&auto=format&fit=crop&q=80', caption: 'High-rise tower view & pool', displayOrder: 0, isCover: true },
-          { url: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1000&auto=format&fit=crop&q=80', caption: 'Open-concept living room', displayOrder: 1 },
-          { url: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=1000&auto=format&fit=crop&q=80', caption: 'Bedroom with wardrobe & hardwood floors', displayOrder: 2 }
-        ]
-      },
-      amenities: {
-        create: [
-          { amenity: { connect: { id: amenities['wifi'].id } } },
-          { amenity: { connect: { id: amenities['swimming-pool'].id } } },
-          { amenity: { connect: { id: amenities['gym'].id } } },
-          { amenity: { connect: { id: amenities['parking'].id } } },
-          { amenity: { connect: { id: amenities['power-backup'].id } } },
-          { amenity: { connect: { id: amenities['elevator'].id } } }
-        ]
-      }
-    }
-  });
-
-  const p5 = await prisma.property.create({
-    data: {
-      landlordId: landlord3.id,
-      title: 'Boutique 2BHK Sea-Breeze Flat in Pali Hill Bandra',
-      description: 'Rare heritage apartment on serene Zig-Zag Road in Pali Hill. High ceilings, teakwood flooring, cross ventilation with Arabian sea breeze, and 24/7 security. Walking distance from Carter Road promenade.',
-      propertyType: 'APARTMENT',
-      furnishing: 'FURNISHED',
-      address: '14, Zig Zag Road, Pali Hill, Bandra West',
-      city: 'Mumbai',
-      neighborhood: 'Bandra West',
-      latitude: 19.0607,
-      longitude: 72.8258,
-      rent: 68000,
-      deposit: 150000,
-      distanceMetro: 2.1,
-      distanceCollege: 1.2,
-      distanceTechPark: 4.5,
-      distanceHospital: 0.8,
-      isVerified: true,
-      featured: true,
-      viewsCount: 520,
-      rooms: {
-        create: [
-          { name: 'Pali Suite with Heritage Windows', rent: 36000, deposit: 80000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },
-          { name: 'Artsy Deluxe Bedroom', rent: 32000, deposit: 70000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true }
-        ]
-      },
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1000&auto=format&fit=crop&q=80', caption: 'Heritage living room interior', displayOrder: 0, isCover: true },
-          { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1000&auto=format&fit=crop&q=80', caption: 'Designer bedroom with balcony', displayOrder: 1 },
-          { url: 'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=1000&auto=format&fit=crop&q=80', caption: 'Art Deco dining area', displayOrder: 2 }
-        ]
-      },
-      amenities: {
-        create: [
-          { amenity: { connect: { id: amenities['wifi'].id } } },
-          { amenity: { connect: { id: amenities['ac'].id } } },
-          { amenity: { connect: { id: amenities['security'].id } } },
-          { amenity: { connect: { id: amenities['washing-machine'].id } } },
-          { amenity: { connect: { id: amenities['pet-friendly'].id } } }
-        ]
-      }
-    }
-  });
-
-  const p6 = await prisma.property.create({
-    data: {
-      landlordId: landlord3.id,
-      title: 'Spacious 3BHK Gated Apartment in Financial District',
-      description: 'Ultra-modern apartment 5 minutes from Amazon, Microsoft, and Google campus in Gachibowli. Features 100% power backup, club house, squash court, and reserved basement parking.',
-      propertyType: 'APARTMENT',
-      furnishing: 'FURNISHED',
-      address: 'My Home Bhooja, Gachibowli, Financial District',
-      city: 'Hyderabad',
-      neighborhood: 'Gachibowli',
-      latitude: 17.4399,
-      longitude: 78.3685,
-      rent: 38000,
-      deposit: 76000,
-      distanceMetro: 3.5,
-      distanceCollege: 2.0,
-      distanceTechPark: 0.5,
-      distanceHospital: 1.2,
-      isVerified: true,
-      featured: false,
-      viewsCount: 260,
-      rooms: {
-        create: [
-          { name: 'Master Room with Glass Balcony', rent: 14000, deposit: 28000, totalBeds: 1, hasEnsuiteBath: true, hasBalcony: true, hasAC: true },
-          { name: 'Comfort Room with Desk', rent: 12500, deposit: 25000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: true },
-          { name: 'Standard Room', rent: 11500, deposit: 23000, totalBeds: 1, hasEnsuiteBath: false, hasBalcony: false, hasAC: false }
-        ]
-      },
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1000&auto=format&fit=crop&q=80', caption: 'Spacious living room', displayOrder: 0, isCover: true },
-          { url: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1000&auto=format&fit=crop&q=80', caption: 'Master bedroom with balcony', displayOrder: 1 }
-        ]
-      },
-      amenities: {
-        create: [
-          { amenity: { connect: { id: amenities['wifi'].id } } },
-          { amenity: { connect: { id: amenities['ac'].id } } },
-          { amenity: { connect: { id: amenities['parking'].id } } },
-          { amenity: { connect: { id: amenities['swimming-pool'].id } } },
-          { amenity: { connect: { id: amenities['power-backup'].id } } }
-        ]
-      }
-    }
-  });
-
-  await prisma.review.create({
-    data: {
-      propertyId: p1.id,
-      authorId: tenant1.id,
-      rating: 5,
-      comment: 'Super peaceful society, amazing wooden balcony for working from home, and Rajesh uncle is very accommodating and helpful!'
-    }
-  });
-
-  await prisma.review.create({
-    data: {
-      propertyId: p2.id,
-      authorId: tenant2.id,
-      rating: 5,
-      comment: 'Best location in Indiranagar. The metro station is literally 3 minutes walk, lots of trees, and cafes nearby!'
-    }
-  });
-
-  await prisma.review.create({
-    data: {
-      propertyId: p5.id,
-      authorId: tenant3.id,
-      rating: 5,
-      comment: 'Outstanding vintage charm in Bandra. Sea breeze is incredible, and the landlord Vikram is super professional.'
-    }
-  });
-
-  await prisma.visitRequest.create({
-    data: {
-      tenantId: tenant1.id,
-      propertyId: p1.id,
-      preferredDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-      preferredTimeSlot: '11:00 AM - 12:00 PM',
-      notes: 'Would love to see the master bedroom and test the Wi-Fi speed.',
-      status: 'ACCEPTED',
-      landlordNotes: 'Confirmed! See you Saturday morning at the apartment gate.'
-    }
-  });
-
-  const conversation = await prisma.conversation.create({
-    data: {
-      tenantId: tenant1.id,
-      landlordId: landlord1.id,
-      propertyId: p1.id,
-      lastMessageAt: new Date()
-    }
-  });
-
-  await prisma.message.create({
-    data: {
-      conversationId: conversation.id,
-      senderId: tenant1.id,
-      content: 'Hi Rajesh! Is the master bedroom with the attached balcony still available for move-in next month?',
-      isRead: true
-    }
-  });
-
-  await prisma.message.create({
-    data: {
-      conversationId: conversation.id,
-      senderId: landlord1.id,
-      content: 'Hello Aarav! Yes, it is available from the 1st of next month. Feel free to come visit anytime this weekend!',
-      isRead: false
-    }
-  });
-
-  await prisma.verificationRecord.create({
-    data: {
-      userId: tenant1.id,
-      documentType: 'GOVERNMENT_ID',
-      documentUrl: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600',
-      status: 'VERIFIED',
-      reviewedAt: new Date(),
-      adminNotes: 'Government ID verified by Roomly Trust & Safety team.'
-    }
-  });
-
-  console.log('✅ Real-world database seeding completed successfully!');
-  console.log('📊 Properties seeded in: Bangalore (Koramangala, Indiranagar, HSR, Whitefield), Mumbai (Bandra West), Hyderabad (Gachibowli)');
+  console.log('');
+  console.log('✅ Done! 25 unique properties seeded across:');
+  console.log('   🇮🇳 Bangalore (10), Mumbai (4), Hyderabad (3), Pune (3), Chennai (3), Delhi/NCR (2)');
 }
 
 main()
-  .catch((e) => {
-    console.error('❌ Seeding failed:', e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .catch((e) => { console.error('❌ Seeding failed:', e); process.exit(1); })
+  .finally(async () => { await prisma.$disconnect(); });
