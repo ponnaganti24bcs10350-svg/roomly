@@ -71,6 +71,16 @@ export const PropertiesPage: React.FC = () => {
     }
   });
 
+  const { data: citiesData } = useQuery({
+    queryKey: ['property-cities'],
+    queryFn: async () => {
+      const res = await api.get('/properties/cities');
+      return res.data.cities as string[];
+    }
+  });
+
+  const cityList = ['All', ...(citiesData && citiesData.length > 0 ? citiesData : ['Bangalore', 'Mumbai', 'Hyderabad', 'Pune', 'Chennai', 'Delhi', 'New York', 'London', 'Dubai'])];
+
   const handleToggleAmenity = (slug: string) => {
     setSelectedAmenities((prev) =>
       prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
@@ -131,7 +141,7 @@ export const PropertiesPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none">
-          {['All', 'New York', 'London', 'San Francisco', 'Dubai', 'Tokyo', 'Paris', 'Sydney', 'Bangalore', 'Mumbai'].map((c) => (
+          {cityList.map((c) => (
             <button
               key={c}
               onClick={() => { setCity(c); setPage(1); }}

@@ -16,6 +16,23 @@ router.get('/amenities', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/cities', async (req: Request, res: Response) => {
+  try {
+    const properties = await prisma.property.findMany({
+      where: { status: 'ACTIVE' },
+      select: { city: true },
+      distinct: ['city']
+    });
+    const cities = properties
+      .map((p) => p.city)
+      .filter((c): c is string => Boolean(c) && c.trim().length > 0)
+      .sort((a, b) => a.localeCompare(b));
+    return res.json({ success: true, cities });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Failed to fetch cities' });
+  }
+});
+
 router.get('/', optionalAuth, async (req: AuthRequest, res: Response) => {
   try {
     const {

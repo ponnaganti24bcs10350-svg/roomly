@@ -82,18 +82,19 @@ async function main() {
   ];
 
   for (const prop of props) {
-    const { rooms, images, amenitySlugs, ...propData } = prop;
+    const { rooms, images, amenitySlugs, landlordId, ...restPropData } = prop;
     await prisma.property.create({
       data: {
-        ...propData,
+        ...restPropData,
+        landlord: { connect: { id: landlordId } },
         status: 'ACTIVE',
         availableFrom: new Date(),
         rooms: { create: rooms },
         images: { create: images },
         amenities: { create: amenitySlugs.map((slug: string) => ({ amenity: { connect: { id: amenities[slug].id } } })) },
-      }
+      } as any
     });
-    console.log(`  ✓ Created: ${propData.title}`);
+    console.log(`  ✓ Created: ${restPropData.title}`);
   }
 
   console.log('');

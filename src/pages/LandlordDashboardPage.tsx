@@ -28,8 +28,8 @@ export const LandlordDashboardPage: React.FC = () => {
   const { data: propsData, refetch: refetchProps } = useQuery({
     queryKey: ['landlord-properties', user?.id],
     queryFn: async () => {
-      const res = await api.get('/properties?limit=50');
-      return (res.data.properties as Property[]).filter((p) => p.landlordId === user?.id);
+      const res = await api.get('/properties/my-listings');
+      return (res.data.listings || []) as Property[];
     },
     enabled: !!user
   });

@@ -47,6 +47,18 @@ export const HomePage: React.FC = () => {
     }
   });
 
+  const { data: citiesData } = useQuery({
+    queryKey: ['available-cities'],
+    queryFn: async () => {
+      const res = await api.get('/properties/cities');
+      return res.data.cities as string[];
+    }
+  });
+
+  const availableCities = citiesData && citiesData.length > 0
+    ? citiesData
+    : ['Bangalore', 'Mumbai', 'Hyderabad', 'Pune', 'Chennai', 'Delhi', 'New York', 'London', 'Dubai'];
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
@@ -101,15 +113,9 @@ export const HomePage: React.FC = () => {
                     onChange={(e) => setSearchCity(e.target.value)}
                     className="w-full bg-transparent text-sm font-bold text-slate-900 focus:outline-none cursor-pointer"
                   >
-                    <option value="New York">New York, USA</option>
-                    <option value="London">London, UK</option>
-                    <option value="San Francisco">San Francisco, USA</option>
-                    <option value="Dubai">Dubai, UAE</option>
-                    <option value="Tokyo">Tokyo, Japan</option>
-                    <option value="Paris">Paris, France</option>
-                    <option value="Sydney">Sydney, Australia</option>
-                    <option value="Bangalore">Bangalore, India</option>
-                    <option value="Mumbai">Mumbai, India</option>
+                    {availableCities.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -160,49 +166,16 @@ export const HomePage: React.FC = () => {
             </form>
 
             <div className="pt-2 flex items-center justify-center gap-2 text-xs text-slate-500 flex-wrap">
-              <span className="font-semibold text-slate-600">Global destinations:</span>
-              <button
-                onClick={() => navigate('/properties?city=New York')}
-                className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors shadow-2xs font-medium"
-              >
-                🗽 New York
-              </button>
-              <button
-                onClick={() => navigate('/properties?city=London')}
-                className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors shadow-2xs font-medium"
-              >
-                🇬🇧 London
-              </button>
-              <button
-                onClick={() => navigate('/properties?city=Dubai')}
-                className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors shadow-2xs font-medium"
-              >
-                🏙️ Dubai
-              </button>
-              <button
-                onClick={() => navigate('/properties?city=Tokyo')}
-                className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors shadow-2xs font-medium"
-              >
-                🗼 Tokyo
-              </button>
-              <button
-                onClick={() => navigate('/properties?city=San Francisco')}
-                className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors shadow-2xs font-medium"
-              >
-                🌉 San Francisco
-              </button>
-              <button
-                onClick={() => navigate('/properties?city=Paris')}
-                className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors shadow-2xs font-medium"
-              >
-                🥐 Paris
-              </button>
-              <button
-                onClick={() => navigate('/properties?city=Bangalore')}
-                className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors shadow-2xs font-medium"
-              >
-                🇮🇳 Bangalore
-              </button>
+              <span className="font-semibold text-slate-600">Popular destinations:</span>
+              {availableCities.slice(0, 8).map((city) => (
+                <button
+                  key={city}
+                  onClick={() => navigate(`/properties?city=${encodeURIComponent(city)}`)}
+                  className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors shadow-2xs font-medium"
+                >
+                  📍 {city}
+                </button>
+              ))}
             </div>
 
           </div>

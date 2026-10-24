@@ -17,10 +17,22 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({
 }) => {
   const [activePin, setActivePin] = useState<Property | null>(externalSelected || null);
 
-  const minLat = 12.89;
-  const maxLat = 13.01;
-  const minLng = 77.56;
-  const maxLng = 77.75;
+  const validProps = properties.filter((p) => typeof p.latitude === 'number' && typeof p.longitude === 'number');
+  const lats = validProps.map((p) => p.latitude);
+  const lngs = validProps.map((p) => p.longitude);
+
+  const rawMinLat = lats.length > 0 ? Math.min(...lats) : 12.89;
+  const rawMaxLat = lats.length > 0 ? Math.max(...lats) : 13.01;
+  const rawMinLng = lngs.length > 0 ? Math.min(...lngs) : 77.56;
+  const rawMaxLng = lngs.length > 0 ? Math.max(...lngs) : 77.75;
+
+  const latSpan = Math.max(0.015, rawMaxLat - rawMinLat);
+  const lngSpan = Math.max(0.015, rawMaxLng - rawMinLng);
+
+  const minLat = rawMinLat - latSpan * 0.12;
+  const maxLat = rawMaxLat + latSpan * 0.12;
+  const minLng = rawMinLng - lngSpan * 0.12;
+  const maxLng = rawMaxLng + lngSpan * 0.12;
 
   const getCoordinates = (lat: number, lng: number) => {
     const y = ((maxLat - lat) / (maxLat - minLat)) * 80 + 10;
@@ -30,6 +42,10 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({
       left: `${Math.min(90, Math.max(10, x))}%`
     };
   };
+
+  const topNeighborhoods = Array.from(
+    new Set(validProps.map((p) => p.neighborhood).filter(Boolean))
+  ).slice(0, 4);
 
   const handlePinClick = (p: Property) => {
     setActivePin(p);
@@ -48,26 +64,23 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({
         <path d="M 550 0 Q 600 300 700 800" />
       </svg>
 
-      <div className="absolute top-[35%] left-[45%] pointer-events-none text-center">
-        <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 bg-white/70 px-2 py-0.5 rounded-full border border-slate-200">
-          Koramangala Tech Hub
-        </span>
-      </div>
-      <div className="absolute top-[20%] left-[55%] pointer-events-none text-center">
-        <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 bg-white/70 px-2 py-0.5 rounded-full border border-slate-200">
-          Indiranagar 100ft
-        </span>
-      </div>
-      <div className="absolute top-[65%] left-[52%] pointer-events-none text-center">
-        <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 bg-white/70 px-2 py-0.5 rounded-full border border-slate-200">
-          HSR Sector 2
-        </span>
-      </div>
-      <div className="absolute top-[25%] left-[80%] pointer-events-none text-center">
-        <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 bg-white/70 px-2 py-0.5 rounded-full border border-slate-200">
-          Whitefield ITPL
-        </span>
-      </div>
+      {topNeighborhoods.map((n) => {
+        const matching = validProps.filter((p) => p.neighborhood === n);
+        const avgLat = matching.reduce((acc, p) => acc + p.latitude, 0) / matching.length;
+        const avgLng = matching.reduce((acc, p) => acc + p.longitude, 0) / matching.length;
+        const coords = getCoordinates(avgLat, avgLng);
+        return (
+          <div
+            key={n}
+            style={{ top: coords.top, left: coords.left }}
+            className="absolute -translate-x-1/2 -translate-y-8 pointer-events-none text-center"
+          >
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 bg-white/80 px-2 py-0.5 rounded-full border border-slate-200 shadow-2xs backdrop-blur-xs">
+              {n}
+            </span>
+          </div>
+        );
+      })}
 
       <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-card border border-slate-200 text-xs font-bold text-slate-800">
         <Navigation className="w-4 h-4 text-brand-600 animate-pulse" />

@@ -81,6 +81,18 @@ export const RoommatesPage: React.FC = () => {
     }
   });
 
+  const { data: citiesData } = useQuery({
+    queryKey: ['available-cities'],
+    queryFn: async () => {
+      const res = await api.get('/properties/cities');
+      return res.data.cities as string[];
+    }
+  });
+
+  const availableCities = citiesData && citiesData.length > 0
+    ? citiesData
+    : ['Bangalore', 'Mumbai', 'Hyderabad', 'Pune', 'Chennai', 'Delhi', 'Noida', 'Gurgaon'];
+
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -183,10 +195,9 @@ export const RoommatesPage: React.FC = () => {
               className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               <option value="All">All Cities</option>
-              <option value="Bangalore">Bangalore</option>
-              <option value="Mumbai">Mumbai</option>
-              <option value="Delhi">Delhi</option>
-              <option value="Pune">Pune</option>
+              {availableCities.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
             </select>
 
             <select
