@@ -24,7 +24,7 @@ export const PropertiesPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [search, setSearch] = useState(searchParams.get('search') || '');
-  const [city, setCity] = useState(searchParams.get('city') || 'Bangalore');
+  const [city, setCity] = useState(searchParams.get('city') || 'All');
   const [propertyType, setPropertyType] = useState(searchParams.get('propertyType') || 'All');
   const [furnishing, setFurnishing] = useState(searchParams.get('furnishing') || 'All');
   const [minRent, setMinRent] = useState(searchParams.get('minRent') || '');
