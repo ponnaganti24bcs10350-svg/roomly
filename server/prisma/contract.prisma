@@ -1,0 +1,331 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  TENANT
+  LANDLORD
+  ADMIN
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  PG
+  HOSTEL
+  STUDIO
+  SHARED_ROOM
+}
+
+enum Furnishing {
+  FURNISHED
+  SEMI_FURNISHED
+  UNFURNISHED
+}
+
+enum ListingStatus {
+  ACTIVE
+  INACTIVE
+  PENDING_REVIEW
+}
+
+enum VisitStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+enum MatchStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model User {
+  id                String               @id @default(cuid())
+  email             String               @unique
+  password          String
+  firstName         String
+  lastName          String
+  phone             String?
+  avatar            String?
+  role              Role                 @default(TENANT)
+  status            AccountStatus        @default(ACTIVE)
+  isEmailVerified   Boolean              @default(true)
+  isPhoneVerified   Boolean              @default(true)
+  isProfileVerified Boolean              @default(true)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  // Relationships
+  roommateProfile   RoommateProfile?
+  matchesInitiated  Match[]              @relation("UserMatches")
+  matchesReceived   Match[]              @relation("MatchedUserMatches")
+  properties        Property[]           @relation("LandlordProperties")
+  favorites         Favorite[]
+  visitRequests     VisitRequest[]       @relation("TenantVisits")
+  notifications     Notification[]
+  sentMessages      Message[]            @relation("UserSentMessages")
+  reportsFiled      Report[]             @relation("ReporterUser")
+  reportsAgainst    Report[]             @relation("TargetedUser")
+  tenantConvs       Conversation[]       @relation("TenantConversations")
+  landlordConvs     Conversation[]       @relation("LandlordConversations")
+  reviews           Review[]             @relation("UserReviews")
+  verificationRecords VerificationRecord[]
+}
+
+model RoommateProfile {
+  id                 String    @id @default(cuid())
+  userId             String    @unique
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  budgetMin          Int       @default(8000)
+  budgetMax          Int       @default(18000)
+  preferredCity      String    @default("Bangalore")
+  preferredLocations String?
+  occupation         String?   @default("Software Engineer")
+  companyOrCollege   String?   @default("Tech / University")
+  age                Int?      @default(24)
+  gender             String?   @default("Any")
+  
+  // Lifestyle vectors for compatibility scoring
+  sleepSchedule      String    @default("NIGHT_OWL")
+  foodPreference     String    @default("FLEXIBLE")
+  cleanliness        Int       @default(4)
+  smoking            String    @default("NON_SMOKER")
+  pets               String    @default("LOVES_PETS")
+  socialLevel        Int       @default(3)
+  guests             String    @default("SOMETIMES")
+  noiseTolerance     Int       @default(3)
+  bio                String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model Match {
+  id                 String      @id @default(cuid())
+  userId             String
+  matchedUserId      String
+  compatibilityScore Float       @default(0.0)
+  status             MatchStatus @default(PENDING)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  user               User        @relation("UserMatches", fields: [userId], references: [id], onDelete: Cascade)
+  matchedUser        User        @relation("MatchedUserMatches", fields: [matchedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, matchedUserId])
+  @@index([matchedUserId])
+  @@index([compatibilityScore])
+}
+
+model Property {
+  id               String            @id @default(cuid())
+  landlordId       String
+  landlord         User              @relation("LandlordProperties", fields: [landlordId], references: [id], onDelete: Cascade)
+  title            String
+  description      String
+  propertyType     PropertyType      @default(APARTMENT)
+  furnishing       Furnishing        @default(FURNISHED)
+  address          String
+  city             String            @default("Bangalore")
+  neighborhood     String?
+  latitude         Float             @default(12.9716)
+  longitude        Float             @default(77.5946)
+  rent             Int
+  deposit          Int
+  availableFrom    DateTime          @default(now())
+  status           ListingStatus     @default(ACTIVE)
+  isVerified       Boolean           @default(true)
+  featured         Boolean           @default(false)
+  viewsCount       Int               @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  // Distances to hubs (in km)
+  distanceMetro    Float?
+  distanceCollege  Float?
+  distanceTechPark Float?
+  distanceHospital Float?
+
+  // Relations
+  rooms            Room[]
+  images           PropertyImage[]
+  amenities        PropertyAmenity[]
+  favorites        Favorite[]
+  visitRequests    VisitRequest[]
+  conversations    Conversation[]
+  reports          Report[]
+  reviews          Review[]
+}
+
+model Room {
+  id              String    @id @default(cuid())
+  propertyId      String
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  name            String
+  rent            Int
+  deposit         Int
+  totalBeds       Int       @default(1)
+  occupiedBeds    Int       @default(0)
+  isAvailable     Boolean   @default(true)
+  hasEnsuiteBath  Boolean   @default(false)
+  hasBalcony      Boolean   @default(false)
+  hasAC           Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Amenity {
+  id          String            @id @default(cuid())
+  name        String            @unique
+  slug        String            @unique
+  icon        String
+  category    String            @default("Essentials")
+  properties  PropertyAmenity[]
+}
+
+model PropertyAmenity {
+  id          String    @id @default(cuid())
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  amenityId   String
+  amenity     Amenity   @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, amenityId])
+}
+
+model PropertyImage {
+  id            String    @id @default(cuid())
+  propertyId    String
+  property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url           String
+  caption       String?
+  category      String    @default("EXTERIOR")
+  displayOrder  Int       @default(0)
+  isCover       Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+}
+
+model Favorite {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, propertyId])
+}
+
+model VisitRequest {
+  id                String      @id @default(cuid())
+  tenantId          String
+  tenant            User        @relation("TenantVisits", fields: [tenantId], references: [id], onDelete: Cascade)
+  propertyId        String
+  property          Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  preferredDate     DateTime
+  preferredTimeSlot String
+  notes             String?
+  status            VisitStatus @default(PENDING)
+  landlordNotes     String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+model Conversation {
+  id            String        @id @default(cuid())
+  tenantId      String
+  tenant        User          @relation("TenantConversations", fields: [tenantId], references: [id], onDelete: Cascade)
+  landlordId    String
+  landlord      User          @relation("LandlordConversations", fields: [landlordId], references: [id], onDelete: Cascade)
+  propertyId    String?
+  property      Property?     @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  lastMessageAt DateTime      @default(now())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  messages      Message[]
+}
+
+model Message {
+  id              String        @id @default(cuid())
+  conversationId  String
+  conversation    Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId        String
+  sender          User          @relation("UserSentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  content         String
+  isRead          Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  message     String
+  type        String    @default("INFO")
+  link        String?
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+}
+
+model Report {
+  id               String        @id @default(cuid())
+  reporterId       String
+  reporter         User          @relation("ReporterUser", fields: [reporterId], references: [id], onDelete: Cascade)
+  targetType       String
+  targetPropertyId String?
+  property         Property?     @relation(fields: [targetPropertyId], references: [id], onDelete: SetNull)
+  targetUserId     String?
+  targetUser       User?         @relation("TargetedUser", fields: [targetUserId], references: [id], onDelete: SetNull)
+  reason           String
+  description      String
+  status           String        @default("PENDING")
+  adminNotes       String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model Review {
+  id          String    @id @default(cuid())
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  authorId    String
+  author      User      @relation("UserReviews", fields: [authorId], references: [id], onDelete: Cascade)
+  rating      Int       @default(5)
+  comment     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model VerificationRecord {
+  id           String             @id @default(cuid())
+  userId       String
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documentType String             @default("GOVERNMENT_ID")
+  documentUrl  String
+  status       VerificationStatus @default(PENDING)
+  reviewedAt   DateTime?
+  adminNotes   String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
