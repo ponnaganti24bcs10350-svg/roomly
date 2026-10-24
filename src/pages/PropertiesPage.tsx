@@ -61,7 +61,7 @@ export const PropertiesPage: React.FC = () => {
       if (sortBy) params.set('sortBy', sortBy);
       if (selectedAmenities.length > 0) params.set('amenities', selectedAmenities.join(','));
       params.set('page', page.toString());
-      params.set('limit', '12');
+      params.set('limit', '24');
 
       const res = await api.get(`/properties?${params.toString()}`);
       return res.data as {
@@ -320,7 +320,7 @@ export const PropertiesPage: React.FC = () => {
 
           <div className="flex items-center justify-between">
             <p className="text-xs font-semibold text-slate-500">
-              Showing <span className="font-bold text-slate-900">{properties.length}</span> properties in <span className="text-brand-700 font-bold">{city}</span>
+              Showing <span className="font-bold text-slate-900">{properties.length}</span>{pagination && pagination.total > properties.length ? <span> of <span className="font-bold text-slate-900">{pagination.total}</span></span> : ''} properties{city !== 'All' ? <span> in <span className="text-brand-700 font-bold">{city}</span></span> : ''}
             </p>
           </div>
 
